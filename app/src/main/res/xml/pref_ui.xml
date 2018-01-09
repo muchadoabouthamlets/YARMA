@@ -1,0 +1,23 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue="@string/pref_ui_name_default_display_name"
+        android:inputType="textCapWords"
+        android:key="text_ui_display_name"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_ui_name_title" />
+
+    <ListPreference
+        android:defaultValue="Portrait"
+        android:entries="@array/pref_ui_orientations"
+        android:entryValues="@array/pref_ui_orientations"
+        android:key="list_ui_orientation"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_ui_orientation_title" />
+
+
+</PreferenceScreen>
