@@ -67,7 +67,7 @@ public class Tile {
      */
     public Tile() {
         //empty constructor used only to create unknown tiles
-        this(Rank.UNKNOWN,Suit.UNKNOWN);
+        this(Rank.UNKNOWN);
     } //end Tile constructor
 
     public Tile(Rank rank) {
@@ -101,19 +101,19 @@ public class Tile {
         } else {
             //attempt to infer suit and type for jihai
             switch (rank) {
-                case TON: this.suit = Suit.KAZEHAI; this.type = Type.JIHAI;
+                case TON: this.rank = rank; this.suit = Suit.KAZEHAI; this.type = Type.JIHAI;
                     break;
-                case NAN: this.suit = Suit.KAZEHAI; this.type = Type.JIHAI;
+                case NAN: this.rank = rank; this.suit = Suit.KAZEHAI; this.type = Type.JIHAI;
                     break;
-                case SHA: this.suit = Suit.KAZEHAI; this.type = Type.JIHAI;
+                case SHA: this.rank = rank; this.suit = Suit.KAZEHAI; this.type = Type.JIHAI;
                     break;
-                case PEI: this.suit = Suit.KAZEHAI; this.type = Type.JIHAI;
+                case PEI: this.rank = rank; this.suit = Suit.KAZEHAI; this.type = Type.JIHAI;
                     break;
-                case HAKU: this.suit = Suit.SANGENPAI; this.type = Type.JIHAI;
+                case HAKU: this.rank = rank; this.suit = Suit.SANGENPAI; this.type = Type.JIHAI;
                     break;
-                case HATSU: this.suit = Suit.SANGENPAI; this.type = Type.JIHAI;
+                case HATSU: this.rank = rank; this.suit = Suit.SANGENPAI; this.type = Type.JIHAI;
                     break;
-                case CHUN: this.suit = Suit.SANGENPAI; this.type = Type.JIHAI;
+                case CHUN: this.rank = rank; this.suit = Suit.SANGENPAI; this.type = Type.JIHAI;
                     break;
             } //end switch-case
         } //end if statement
@@ -172,7 +172,7 @@ public class Tile {
 
 
         //if tile validation failed for any reason, make the tile an unknown one
-        if (status) {
+        if (!status) {
             this.rank = Rank.UNKNOWN;
             this.suit = Suit.UNKNOWN;
             this.type = Type.UNKNOWN;
@@ -186,15 +186,15 @@ public class Tile {
     /*
      * Getters for fields
      */
-    Rank getRank() {
+    public Rank getRank() {
         return this.rank;
     } //end getRank method
 
-    Suit getSuit() {
+    public Suit getSuit() {
         return this.suit;
     } //end getSuit method
 
-    Type getType() {
+    public Type getType() {
         return this.type;
     } //end getType method
 
@@ -202,37 +202,37 @@ public class Tile {
     /*
      * is() methods for enums
      */
-    boolean is(Rank r) {
+    public boolean is(Rank r) {
         return (r == this.rank);
     } //end is method
 
-    boolean is(Suit s) {
+    public boolean is(Suit s) {
         return (s == this.suit);
     } //end is method
 
-    boolean is(Type t) {
+    public boolean is(Type t) {
         return (t == this.type);
     } //end is method
 
-    boolean is(Attribute a) {
+    public boolean is(Attribute a) {
         for (Attribute attribute : this.attributes) {
             if (attribute == a) return true;
         } //end for loop
         return false;
     } //end is method
 
-    boolean isRed() {
+    public boolean isRed() {
         return isRed;
     } //end is method
 
     /*
-    boolean isVisible() {
+    public boolean isVisible() {
 
     }
     */
 
     //returns a generated name based on the tile's rank and suit
-    String getName(boolean b) {
+    public String getName(boolean b) {
         String s = "";
 
         switch (rank) {
@@ -268,7 +268,7 @@ public class Tile {
         return s;
     } //end getName method
 
-    String getName() {
+    public String getName() {
         return getName(false);
     } //end getName method
 
