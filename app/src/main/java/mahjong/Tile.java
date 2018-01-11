@@ -98,56 +98,115 @@ public class Tile {
         if (rank == Rank.UNKNOWN) {
             //at minimum, the rank must be known to generate a tile
             status = false;
+
         } else {
-            //attempt to infer suit and type for jihai
-            switch (rank) {
-                case TON: this.rank = rank; this.suit = Suit.KAZEHAI; this.type = Type.JIHAI;
-                    break;
-                case NAN: this.rank = rank; this.suit = Suit.KAZEHAI; this.type = Type.JIHAI;
-                    break;
-                case SHA: this.rank = rank; this.suit = Suit.KAZEHAI; this.type = Type.JIHAI;
-                    break;
-                case PEI: this.rank = rank; this.suit = Suit.KAZEHAI; this.type = Type.JIHAI;
-                    break;
-                case HAKU: this.rank = rank; this.suit = Suit.SANGENPAI; this.type = Type.JIHAI;
-                    break;
-                case HATSU: this.rank = rank; this.suit = Suit.SANGENPAI; this.type = Type.JIHAI;
-                    break;
-                case CHUN: this.rank = rank; this.suit = Suit.SANGENPAI; this.type = Type.JIHAI;
-                    break;
-            } //end switch-case
+
+            if ((suit == Suit.KAZEHAI) || (suit == Suit.SANGENPAI) || (suit == Suit.UNKNOWN)) {
+                //attempt to infer suit and type for jihai
+                switch (rank) {
+                    case TON:
+                        this.rank = rank;
+                        this.suit = Suit.KAZEHAI;
+                        this.type = Type.JIHAI;
+                        break;
+                    case NAN:
+                        this.rank = rank;
+                        this.suit = Suit.KAZEHAI;
+                        this.type = Type.JIHAI;
+                        break;
+                    case SHA:
+                        this.rank = rank;
+                        this.suit = Suit.KAZEHAI;
+                        this.type = Type.JIHAI;
+                        break;
+                    case PEI:
+                        this.rank = rank;
+                        this.suit = Suit.KAZEHAI;
+                        this.type = Type.JIHAI;
+                        break;
+                    case HAKU:
+                        this.rank = rank;
+                        this.suit = Suit.SANGENPAI;
+                        this.type = Type.JIHAI;
+                        break;
+                    case HATSU:
+                        this.rank = rank;
+                        this.suit = Suit.SANGENPAI;
+                        this.type = Type.JIHAI;
+                        break;
+                    case CHUN:
+                        this.rank = rank;
+                        this.suit = Suit.SANGENPAI;
+                        this.type = Type.JIHAI;
+                        break;
+                    default:
+                        //conflicting rank and suit
+                        status = false;
+                        break;
+                }//end switch-case
+            } //end if statement
         } //end if statement
 
         //attempt to infer tile info for non-jihai tiles
-        if ((status) && (type != Type.JIHAI)) {
+        if ((status) && (this.type != Type.JIHAI)) {
             if (suit == Suit.UNKNOWN) {
-                //at minimum the rank and suit must be known to generate a non-jihai tile
+                //at minimum the rank and suit must be known to generate a non-jihai
                 status = false;
+
             } else if ((suit == Suit.MANZU) || (suit == Suit.PINZU) || (suit == Suit.SOUZU)) {
                 switch (rank) {
-                    case NUM_1: this.rank = rank; this.suit = suit; this.type = Type.ROUTOUHAI;
+                    case NUM_1:
+                        this.rank = rank;
+                        this.suit = suit;
+                        this.type = Type.ROUTOUHAI;
                         break;
-                    case NUM_2: this.rank = rank; this.suit = suit; this.type = Type.CHUNCHANHAI;
+                    case NUM_2:
+                        this.rank = rank;
+                        this.suit = suit;
+                        this.type = Type.CHUNCHANHAI;
                         break;
-                    case NUM_3: this.rank = rank; this.suit = suit; this.type = Type.CHUNCHANHAI;
+                    case NUM_3:
+                        this.rank = rank;
+                        this.suit = suit;
+                        this.type = Type.CHUNCHANHAI;
                         break;
-                    case NUM_4: this.rank = rank; this.suit = suit; this.type = Type.CHUNCHANHAI;
+                    case NUM_4:
+                        this.rank = rank;
+                        this.suit = suit;
+                        this.type = Type.CHUNCHANHAI;
                         break;
-                    case NUM_5: this.rank = rank; this.suit = suit; this.type = Type.CHUNCHANHAI;
+                    case NUM_5:
+                        this.rank = rank;
+                        this.suit = suit;
+                        this.type = Type.CHUNCHANHAI;
                         break;
-                    case NUM_6: this.rank = rank; this.suit = suit; this.type = Type.CHUNCHANHAI;
+                    case NUM_6:
+                        this.rank = rank;
+                        this.suit = suit;
+                        this.type = Type.CHUNCHANHAI;
                         break;
-                    case NUM_7: this.rank = rank; this.suit = suit; this.type = Type.CHUNCHANHAI;
+                    case NUM_7:
+                        this.rank = rank;
+                        this.suit = suit;
+                        this.type = Type.CHUNCHANHAI;
                         break;
-                    case NUM_8: this.rank = rank; this.suit = suit; this.type = Type.CHUNCHANHAI;
+                    case NUM_8:
+                        this.rank = rank;
+                        this.suit = suit;
+                        this.type = Type.CHUNCHANHAI;
                         break;
-                    case NUM_9: this.rank = rank; this.suit = suit; this.type = Type.ROUTOUHAI;
+                    case NUM_9:
+                        this.rank = rank;
+                        this.suit = suit;
+                        this.type = Type.ROUTOUHAI;
                         break;
+                    default:
+                        //conflicting rank and suit
+                        status = false;
                 } //end switch-case
             } else {
+                //conflicting rank and suit inputed
                 status = false;
-                Log.e("Tile Validation","Attempted to create tile with " + rank.name()
-                        + " and " + suit.name() + ".");
             } //end if statement
         } //end if statement
 
