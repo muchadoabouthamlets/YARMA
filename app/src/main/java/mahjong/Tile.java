@@ -1,8 +1,6 @@
 package mahjong;
 
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 public class Tile {
@@ -10,7 +8,6 @@ public class Tile {
     private Rank rank;
     private Suit suit;
     private Type type;
-    private boolean isRed; //is akadora or not
     private Attribute[] attributes;
 
     public enum Rank {
@@ -56,9 +53,9 @@ public class Tile {
     public enum Attribute {
         AKADORA, //red dora
 
-        EXPOSED_TO_NO_PLAYERS,
-        EXPOSED_TO_OWNER,
-        EXPOSED_TO_ALL_PLAYERS
+        VISIBLE_TO_NO_PLAYERS,
+        VISIBLE_TO_OWNER,
+        VISIBLE_TO_ALL_PLAYERS
     } //end Attribute enum
 
 
@@ -214,18 +211,42 @@ public class Tile {
         if (status) {
             ArrayList<Attribute> temp = new ArrayList<>();
 
-            //iterate through attributes array
+            boolean hasVisibility = false;
+
+            //iterate through array and perform any necessary handling of certain attributes
             for (Attribute a : attributes) {
-                //perform any necessary handling of certain attributes
+                //perform any checks or necessary handling of certain attributes
+                //duplicate attributes are also removed
                 switch (a) {
-                    case AKADORA: isRed = true;
+                    case AKADORA:
+                        if (this.type == Type.JIHAI) status = false; //jihai cannot be akadora
+                        if (!temp.contains(Attribute.AKADORA)) temp.add(a);
+                        break;
+                    case VISIBLE_TO_NO_PLAYERS:
+                        if (!temp.contains(Attribute.VISIBLE_TO_NO_PLAYERS)) temp.add(a);
+                        break;
+                    case VISIBLE_TO_OWNER:
+                        if (!temp.contains(Attribute.VISIBLE_TO_OWNER)) temp.add(a);
+                        break;
+                    case VISIBLE_TO_ALL_PLAYERS:
+                        if (!temp.contains(Attribute.VISIBLE_TO_ALL_PLAYERS)) temp.add(a);
                         break;
                 } //end switch-case
-
-                temp.add(a); //add attributes to temporary array
             } //end for loop
 
-            this.attributes = temp.toArray(new Attribute[temp.size()]); //convert and copy over
+            //check that only 1 visibility is given (or in the case of 0, assign the default)
+            int numVisibilities = 0;
+            if (temp.contains(Attribute.VISIBLE_TO_NO_PLAYERS)) numVisibilities++;
+            if (temp.contains(Attribute.VISIBLE_TO_OWNER)) numVisibilities++;
+            if (temp.contains(Attribute.VISIBLE_TO_ALL_PLAYERS)) numVisibilities++;
+
+            if (numVisibilities == 0)
+                temp.add(Attribute.VISIBLE_TO_NO_PLAYERS); //default visibility
+            else if (numVisibilities > 1)
+                status = false;
+
+            if (status)
+                this.attributes = temp.toArray(new Attribute[temp.size()]); //copy array over
 
         } //end if statement
 
@@ -235,8 +256,7 @@ public class Tile {
             this.rank = Rank.UNKNOWN;
             this.suit = Suit.UNKNOWN;
             this.type = Type.UNKNOWN;
-            this.attributes = new Attribute[0];
-
+            this.attributes = new Attribute[] {Attribute.VISIBLE_TO_NO_PLAYERS};
         } //end if statement
 
     } //end Tile constructor
@@ -280,10 +300,6 @@ public class Tile {
         return false;
     } //end is method
 
-    public boolean isRed() {
-        return isRed;
-    } //end is method
-
     /*
     public boolean isVisible() {
 
@@ -321,7 +337,7 @@ public class Tile {
             default: break; //unknown or no suffix; do nothing
         } //end switch-case
 
-        if (isRed)
+        if (this.is(Attribute.AKADORA))
             s += "(Red)";
 
         return s;
