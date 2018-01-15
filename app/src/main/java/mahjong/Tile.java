@@ -2,6 +2,7 @@ package mahjong;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Tile {
 
@@ -98,7 +99,7 @@ public class Tile {
 
         } else {
 
-            if ((suit == Suit.KAZEHAI) || (suit == Suit.SANGENPAI) || (suit == Suit.UNKNOWN)) {
+            if ((suit == Suit.KAZEHAI) || (suit == Suit.UNKNOWN)) {
                 //attempt to infer suit and type for jihai
                 switch (rank) {
                     case TON:
@@ -121,6 +122,18 @@ public class Tile {
                         this.suit = Suit.KAZEHAI;
                         this.type = Type.JIHAI;
                         break;
+                    default:
+                        //conflicting rank and suit
+                        if (suit != Suit.UNKNOWN) status = false;
+                        break;
+                } //end switch-case
+            } //end if statement
+
+            if (((suit == Suit.SANGENPAI) || (suit == Suit.UNKNOWN))
+                    && (this.type == null)) { //check if tile was already inferred
+                //attempt to infer suit and type for jihai
+
+                switch (rank) {
                     case HAKU:
                         this.rank = rank;
                         this.suit = Suit.SANGENPAI;
@@ -294,6 +307,7 @@ public class Tile {
     } //end is method
 
     public boolean is(Attribute a) {
+        //check if tile has a certain attribute in its attribute list
         for (Attribute attribute : this.attributes) {
             if (attribute == a) return true;
         } //end for loop
@@ -305,6 +319,55 @@ public class Tile {
 
     }
     */
+
+    @Override
+    public boolean equals(Object object) {
+        //Overrides equals() from object
+        //compares tiles by checking only the rank, suit and type
+
+        if (object == null) return false;
+        if (!Tile.class.isAssignableFrom(object.getClass())) return false;
+
+        final Tile tile = (Tile) object;
+
+        return equals(tile,false);
+    } //end equals method
+
+    public boolean equals(Tile tile, boolean akadora) {
+        //compares tiles by checking the rank, suit, type and akadora attribute
+        return equals(tile, akadora, false);
+    } //end equals method
+
+
+    public boolean equals(Tile tile, boolean akadora, boolean allAttributes) {
+        //compares tiles by checking at minimum the rank, suit and type
+        //akadora boolean indicates whether to include the akadora attribute when comparing tiles
+        //allAttributes boolean indicates whether to compare everything about the tile (esp. attributes)
+
+        //compare suit, rank and type
+        if (this.suit != tile.suit) return false;
+        if (this.rank != tile.rank) return false;
+        if (this.type != tile.type) return false;
+
+        if (!akadora) return true; //tile is equal at least in rank, suit and type
+
+        //compare akadora attribute
+        if (this.is(Attribute.AKADORA) != tile.is(Attribute.AKADORA)) return false;
+
+        if (!allAttributes) return true; //tile is equal in rank, suit, type and AKADORA attribute
+
+        //compare attributes without regard to the order of the attributes in the array
+        if (this.attributes.length != tile.attributes.length) return false;
+        Attribute attributesArray[] = Arrays.copyOf(tile.attributes,tile.attributes.length);
+        for (Attribute a : attributesArray) {
+            if (!this.is(a)) return false;
+        } //end for loop
+
+        return true;
+    } //end equals method
+
+
+
 
     //returns a generated name based on the tile's rank and suit
     public String getName(boolean b) {
