@@ -8,9 +8,13 @@ import static org.junit.Assert.*;
 
 public class TileUnitTest {
 
-    /*
-     * Tests the no-argument constructor
+
+
+    /**
+     * Test for the no-argument constructor
      */
+
+    //Should produce an unknown tile
     //Essentially also tests the unknown tile
     @Test
     public void noArgumentConstructor() throws Exception {
@@ -23,10 +27,13 @@ public class TileUnitTest {
     }
 
 
-    /*
-     * Tests the single argument constructor
+
+    /**
+     * Tests for the single argument constructor
      */
-    //Valid input: all jihai
+
+    //Valid input: any jihai related rank
+    //Should produce a tile of the corresponding jihai rank
     @Test
     public void singleArgumentConstructor_1() throws Exception {
         Tile.Rank ranks[];
@@ -91,10 +98,13 @@ public class TileUnitTest {
     }
 
 
-    /*
+
+    /**
      * Tests the two argument constructor
      */
+
     //Valid input: any num rank + manzu, pinzu or souzu suit
+    //Should produce a tile of the corresponding rank
     @Test
     public void twoArgumentConstructor_1() throws Exception {
 
@@ -135,6 +145,7 @@ public class TileUnitTest {
     }
 
     //Valid input: jihai rank + its appropriate suit
+    //Should produce a tile of the corresponding jihai rank
     @Test
     public void twoArgumentConstructor_2() throws Exception {
 
@@ -168,6 +179,7 @@ public class TileUnitTest {
     }
 
     //Valid input: 1st argument is unknown
+    //Should produce an unknown tile
     @Test
     public void twoArgumentConstructor_3() throws Exception {
 
@@ -186,6 +198,7 @@ public class TileUnitTest {
     }
 
     //Valid input: 2nd argument is unknown
+    //Should produce an unknown tile
     @Test
     public void twoArgumentConstructor_4() throws Exception {
 
@@ -206,7 +219,7 @@ public class TileUnitTest {
     }
 
     //Invalid input: non-jihai rank + jihai suit
-    //should produce an unknown tile
+    //Should produce an unknown tile
     @Test
     public void twoArgumentConstructor_5() throws Exception {
 
@@ -233,7 +246,7 @@ public class TileUnitTest {
     }
 
     //Invalid input: jihai rank + non-jihai suit
-    //should produce an unknown tile
+    //Should produce an unknown tile
     @Test
     public void twoArgumentConstructor_6() throws Exception {
 
@@ -259,7 +272,7 @@ public class TileUnitTest {
     }
 
     //Invalid input: jihai rank + conflicting jihai suit
-    //should produce an unknown tile
+    //Should produce an unknown tile
     @Test
     public void twoArgumentConstructor_7() throws Exception {
 
@@ -292,11 +305,14 @@ public class TileUnitTest {
         }
     }
 
-    /*
-     * Tests the three argument (single attribute) constructor
+
+
+    /**
+     * Tests for the three argument (single attribute) constructor
      */
+
     //Valid input: akadora attribute with non-jihai
-    //produced tiles should be red
+    //Should produce a non-jihai tile with the akadora attribute
     @Test
     public void threeArgumentConstructor_1() throws Exception {
 
@@ -338,7 +354,7 @@ public class TileUnitTest {
     }
 
     //Valid input: non-akadora attribute with non-jihai
-    //produced tiles should not be red
+    //Should produce a non-jihai tile without the akadora attribute
     @Test
     public void threeArgumentConstructor_2() throws Exception {
 
@@ -360,7 +376,7 @@ public class TileUnitTest {
                 assertEquals(r, tile.getRank());
                 assertEquals(s, tile.getSuit());
                 assertEquals(Tile.Type.CHUNCHANHAI, tile.getType());
-                assertEquals(false, tile.is(Tile.Attribute.AKADORA));
+                assertNotEquals(true, tile.is(Tile.Attribute.AKADORA));
                 assertEquals(true, tile.is(Tile.Attribute.VISIBLE_TO_ALL_PLAYERS));
             }
         }
@@ -373,14 +389,14 @@ public class TileUnitTest {
                 assertEquals(r, tile.getRank());
                 assertEquals(s, tile.getSuit());
                 assertEquals(Tile.Type.ROUTOUHAI, tile.getType());
-                assertEquals(false, tile.is(Tile.Attribute.AKADORA));
+                assertNotEquals(true, tile.is(Tile.Attribute.AKADORA));
                 assertEquals(true, tile.is(Tile.Attribute.VISIBLE_TO_ALL_PLAYERS));
             }
         }
     }
 
     //Invalid input: akadora attribute with jihai
-    //should produce unknown tiles
+    //Should produce an unknown tile
     @Test
     public void threeArgumentConstructor_3() throws Exception {
 
@@ -416,12 +432,13 @@ public class TileUnitTest {
 
 
 
-    /*
-     * Tests the three argument (multiple attributes) constructor
+    /**
+     * Tests for the three argument (multiple attributes) constructor
      */
-    //Valid input: Multiple valid attributes
-    //(Currently the only incompatible attributes are multiple visibilities
 
+    //Valid input: Multiple valid attributes
+    //Should produce the tile with all the attributes added regardless of the order of the
+    //attributes in the array used for the Tile constructor's third argument
     @Test
     public void threeArgumentConstructor_4() throws Exception {
 
@@ -431,34 +448,36 @@ public class TileUnitTest {
                 Tile.Attribute.VISIBLE_TO_ALL_PLAYERS
         };
 
-        for (Tile.Attribute a : attributes) {
-            for (Tile.Attribute b : attributes) { //test that only attributes in the array are added
-                if (a != b) {
+        for (Tile.Attribute a1 : attributes) {
+            for (Tile.Attribute a2 : attributes) {
+                if (a1 != a2) {
 
                     Tile t;
                     Tile.Attribute attributesArray[];
 
-                    attributesArray = new Tile.Attribute[]{a, Tile.Attribute.AKADORA};
+                    attributesArray = new Tile.Attribute[]{a1, Tile.Attribute.AKADORA};
                     t = new Tile(Tile.Rank.NUM_5, Tile.Suit.PINZU, attributesArray);
 
                     assertEquals(true, t.is(Tile.Attribute.AKADORA));
-                    assertEquals(true, t.is(a));
-                    assertEquals(false, t.is(b));
+                    assertEquals(true, t.is(a1));
+                    assertEquals(false, t.is(a2));
 
                     //tests different order of attributes in array
-                    attributesArray = new Tile.Attribute[]{Tile.Attribute.AKADORA, a};
+                    attributesArray = new Tile.Attribute[]{Tile.Attribute.AKADORA, a1};
                     t = new Tile(Tile.Rank.NUM_5, Tile.Suit.PINZU, attributesArray);
 
                     assertEquals(true, t.is(Tile.Attribute.AKADORA));
-                    assertEquals(true, t.is(a));
-                    assertEquals(false, t.is(b));
+                    assertEquals(true, t.is(a1));
+                    assertEquals(false, t.is(a2));
                 }
             }
         }
     }
 
     //Valid input: Duplicate attributes
-    //(Shouldn't be done but still valid)
+    //Should produce the tile with duplicate attribute as part of its attributes
+    //(Shouldn't be done but still valid; ideally the attribute should only be added once but
+    // because the array is private, there is currently no way to check if it was)
     @Test
     public void threeArgumentConstructor_5() throws Exception {
 
@@ -469,26 +488,19 @@ public class TileUnitTest {
                 Tile.Attribute.AKADORA
         };
 
-        for (Tile.Attribute a : attributes) { //test using multiple instances of attribute a
-            for (Tile.Attribute b : attributes) {
-                if (a != b) {
+        for (Tile.Attribute a : attributes) {
 
-                    Tile.Attribute attributesArray[] = new Tile.Attribute[]{a, a};
-                    Tile t = new Tile(Tile.Rank.NUM_5, Tile.Suit.SOUZU, attributesArray);
-                    assertEquals(true, t.is(a));
+            Tile.Attribute attributesArray[] = new Tile.Attribute[]{a, a};
+            Tile t = new Tile(Tile.Rank.NUM_5, Tile.Suit.SOUZU, attributesArray);
+            assertEquals(true, t.is(a));
 
-                    if (a == Tile.Attribute.AKADORA) {
-                        assertEquals(true, t.is(Tile.Attribute.VISIBLE_TO_NO_PLAYERS));
-                    } else {
-                        assertEquals(false, t.is(b));
-                    }
-
-                }
+            if (a == Tile.Attribute.AKADORA) {
+                assertEquals(true, t.is(Tile.Attribute.VISIBLE_TO_NO_PLAYERS));
             }
         }
     }
 
-    //Invalid input: Multiple visibilities were specified
+    //Invalid input: Conflicting attributes (multiple visibilities) were provided
     //Should produce unknown tiles
     @Test
     public void threeArgumentConstructor_6() throws Exception {
@@ -500,10 +512,10 @@ public class TileUnitTest {
         };
 
         //2 visibilities
-        for (Tile.Attribute a : attributes) {
-            for (Tile.Attribute b : attributes) {
-                if (a != b) {
-                    Tile.Attribute attributesArray[] = new Tile.Attribute[]{a, b};
+        for (Tile.Attribute a1 : attributes) {
+            for (Tile.Attribute a2 : attributes) {
+                if (a1 != a2) {
+                    Tile.Attribute attributesArray[] = new Tile.Attribute[]{a1, a2};
 
                     Tile t = new Tile(Tile.Rank.NUM_5, Tile.Suit.MANZU, attributesArray);
                     assertEquals(Tile.Rank.UNKNOWN, t.getRank());
@@ -516,11 +528,11 @@ public class TileUnitTest {
         }
 
         //3 visibilities
-        for (Tile.Attribute a : attributes) {
-            for (Tile.Attribute b : attributes) {
-                for (Tile.Attribute c : attributes) {
-                    if ((a != b) && (a != c) && (b != c)) {
-                        Tile.Attribute attributesArray[] = new Tile.Attribute[]{a, b, c};
+        for (Tile.Attribute a1 : attributes) {
+            for (Tile.Attribute a2 : attributes) {
+                for (Tile.Attribute a3 : attributes) {
+                    if ((a1 != a2) && (a1 != a3) && (a2 != a3)) {
+                        Tile.Attribute attributesArray[] = new Tile.Attribute[]{a1, a2, a3};
 
                         Tile t = new Tile(Tile.Rank.NUM_5, Tile.Suit.MANZU, attributesArray);
                         assertEquals(Tile.Rank.UNKNOWN, t.getRank());
@@ -579,10 +591,13 @@ public class TileUnitTest {
     }
 
 
-    /*
+
+    /**
      * Tests the equals method
      */
-    //Tests 2 tiles equal in rank, suit and type
+
+    //Tests the overridden 1-argument equals method using 2 tiles equal in rank, suit and type
+    //Should return true
     @Test
     public void equals_1() throws Exception {
 
@@ -621,9 +636,9 @@ public class TileUnitTest {
         }
     }
 
-    //Tests 2 tiles, one of which is an akadora and the other is not but
-    //is otherwise equal in rank, suit and type.
-    //should return true if the akadora boolean is false; or false if the akadora boolean is true
+    //Tests the 2-argument equals method using 2 tiles both equal in rank, suit and type,
+    //but one tile is an akadora and the other is not.
+    //Should return true if the akadora boolean is false; false if the akadora boolean is true
     @Test
     public void equals_2() throws Exception {
         Tile.Rank ranks[] = new Tile.Rank[]{
@@ -654,9 +669,10 @@ public class TileUnitTest {
         }
     }
 
-    //Tests 2 tiles both of which have the same rank, suit, type and whether the tile is
-    //an akadora or not but the two tiles have different visibilities.
-    //Should return true if the allAttributes boolean is false; false otherwise
+    //Tests the 3-argument equals method using 2 tiles both equal in rank, suit, type
+    //and whether the tile is an akadora or not but the with different visibilities.
+    //Should return true if the allAttributes boolean is false;
+    //false if the allAttributes boolean is true
     @Test
     public void equals_3() throws Exception {
         Tile.Rank ranks[] = new Tile.Rank[]{
@@ -702,9 +718,10 @@ public class TileUnitTest {
         }
     }
 
-    //Tests 2 tiles, both of which have the same rank, suit, type and attributes
-    //but the attributes are not in the same order.
-    //Should return true on equals() since the order is not taken into consideration
+    //Tests the 3-argument equals method using 2 tiles equal in rank, suit, type and attributes
+    //but the order of attributes given to each tiles' constructors are not the same.
+    //Should return true
+    //(the order of the attributes should not be taken into consideration for equality)
     @Test
     public void equals_4() throws Exception {
         Tile.Rank ranks[] = new Tile.Rank[]{
@@ -740,8 +757,8 @@ public class TileUnitTest {
         }
     }
 
-    //Tests 2 tiles which have different ranks
-    //Should return false
+    //Tests all equals methods using 2 tiles which have different ranks
+    //Should return false for all methods
     @Test
     public void equals_5() throws Exception {
         Tile.Rank ranks[];
@@ -763,6 +780,10 @@ public class TileUnitTest {
                         Tile t2 = new Tile(r2, s);
                         assertNotEquals(t1, t2);
                         assertNotEquals(t2, t1);
+                        assertNotEquals(true,t1.equals(t2,true));
+                        assertNotEquals(true,t2.equals(t1,true));
+                        assertNotEquals(true,t1.equals(t2,true, true));
+                        assertNotEquals(true,t2.equals(t1,true, true));
                     }
                 }
             }
@@ -780,13 +801,18 @@ public class TileUnitTest {
                     Tile t2 = new Tile(r2);
                     assertNotEquals(t1, t2);
                     assertNotEquals(t2, t1);
+                    assertNotEquals(true,t1.equals(t2,true));
+                    assertNotEquals(true,t2.equals(t1,true));
+                    assertNotEquals(true,t1.equals(t2,true, true));
+                    assertNotEquals(true,t2.equals(t1,true, true));
+
                 }
             }
         }
     }
 
-    //Tests 2 tiles which have different suits
-    //Should return false
+    //Tests all equals methods using 2 tiles which have different suits
+    //Should return false for all methods
     @Test
     public void equals_6() throws Exception {
 
@@ -807,14 +833,18 @@ public class TileUnitTest {
                         Tile t2 = new Tile(r, s2);
                         assertNotEquals(t1, t2);
                         assertNotEquals(t2, t1);
+                        assertNotEquals(true,t1.equals(t2,true));
+                        assertNotEquals(true,t2.equals(t1,true));
+                        assertNotEquals(true,t1.equals(t2,true, true));
+                        assertNotEquals(true,t2.equals(t1,true, true));
                     }
                 }
             }
         }
     }
 
-    //Tests 2 tiles which have different types (jihai and nonjihai)
-    //Should return false
+    //Tests all equals methods using 2 tiles which have different types (jihai and nonjihai)
+    //Should return false for all methods
     @Test
     public void equals_7() throws Exception {
 
@@ -840,6 +870,128 @@ public class TileUnitTest {
                     Tile t2 = new Tile(r2, s);
                     assertNotEquals(t1, t2);
                     assertNotEquals(t2, t1);
+                    assertNotEquals(true,t1.equals(t2,true));
+                    assertNotEquals(true,t2.equals(t1,true));
+                    assertNotEquals(true,t1.equals(t2,true, true));
+                    assertNotEquals(true,t2.equals(t1,true, true));
+                }
+            }
+        }
+    }
+
+    //Tests the 3-argument equals method using 2 tiles which have the same rank, suit, type
+    //and number of attributes but the attributes are different
+    //Should return false
+    @Test
+    public void equals_8() throws Exception {
+        Tile.Rank ranks[] = new Tile.Rank[]{
+                Tile.Rank.NUM_1, Tile.Rank.NUM_2, Tile.Rank.NUM_3,
+                Tile.Rank.NUM_4, Tile.Rank.NUM_5, Tile.Rank.NUM_6,
+                Tile.Rank.NUM_7, Tile.Rank.NUM_8, Tile.Rank.NUM_9
+        };
+        Tile.Suit suits[] = new Tile.Suit[]{
+                Tile.Suit.MANZU, Tile.Suit.PINZU, Tile.Suit.SOUZU
+        };
+        Tile.Attribute attributes[] = new Tile.Attribute[]{
+                Tile.Attribute.VISIBLE_TO_NO_PLAYERS,
+                Tile.Attribute.VISIBLE_TO_OWNER,
+                Tile.Attribute.VISIBLE_TO_OWNER
+        };
+
+        for (Tile.Rank r : ranks) {
+            for (Tile.Suit s : suits) {
+                for (Tile.Attribute a1 : attributes) {
+                    for (Tile.Attribute a2 : attributes) {
+                        if (a1 != a2) {
+                            Tile t1;
+                            Tile t2;
+                            Tile.Attribute attributesArray1[];
+                            Tile.Attribute attributesArray2[];
+
+                            //1 attribute in array
+                            attributesArray1 = new Tile.Attribute[]{a1};
+                            attributesArray2 = new Tile.Attribute[]{a2};
+                            t1 = new Tile(r,s,attributesArray1);
+                            t2 = new Tile(r,s,attributesArray2);
+
+                            assertNotEquals(true,t1.equals(t2,true,true));
+                            assertNotEquals(true,t2.equals(t1,true,true));
+
+                            //2 attributes in array
+                            attributesArray1 = new Tile.Attribute[]{a1, Tile.Attribute.AKADORA};
+                            attributesArray2 = new Tile.Attribute[]{a2, Tile.Attribute.AKADORA};
+                            t1 = new Tile(r,s,attributesArray1);
+                            t2 = new Tile(r,s,attributesArray2);
+
+                            assertNotEquals(true,t1.equals(t2,true,true));
+                            assertNotEquals(true,t2.equals(t1,true,true));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //Tests the 3-argument equals method using 2 tiles which have the same rank, suit, type
+    //and attributes but the number of attributes given are different
+    //(essentially a duplicate attribute was passed to one of the tile's constructor)
+    //Should return true
+    @Test
+    public void equals_9() throws Exception {
+
+        Tile.Rank ranks[] = new Tile.Rank[]{
+                Tile.Rank.NUM_1, Tile.Rank.NUM_2, Tile.Rank.NUM_3,
+                Tile.Rank.NUM_4, Tile.Rank.NUM_5, Tile.Rank.NUM_6,
+                Tile.Rank.NUM_7, Tile.Rank.NUM_8, Tile.Rank.NUM_9
+        };
+        Tile.Suit suits[] = new Tile.Suit[]{
+                Tile.Suit.MANZU, Tile.Suit.PINZU, Tile.Suit.SOUZU
+        };
+        Tile.Attribute attributes[] = new Tile.Attribute[]{
+                Tile.Attribute.VISIBLE_TO_NO_PLAYERS,
+                Tile.Attribute.VISIBLE_TO_OWNER,
+                Tile.Attribute.VISIBLE_TO_OWNER,
+                Tile.Attribute.AKADORA
+        };
+        for (Tile.Rank r : ranks) {
+            for (Tile.Suit s : suits) {
+                for (Tile.Attribute a : attributes) {
+                    Tile t1;
+                    Tile t2;
+                    Tile.Attribute attributesArray1[];
+                    Tile.Attribute attributesArray2[];
+
+                    //Tests 1-2 arguments
+                    attributesArray1 = new Tile.Attribute[]{a}; //1
+                    attributesArray2 = new Tile.Attribute[]{a, a}; //2
+                    t1 = new Tile(r,s,attributesArray1);
+                    t2 = new Tile(r,s,attributesArray2);
+                    assertEquals(true,t1.equals(t2,true,true));
+                    assertEquals(true,t2.equals(t1,true,true));
+
+                    //Tests 1-3 arguments
+                    attributesArray1 = new Tile.Attribute[]{a}; //1
+                    attributesArray2 = new Tile.Attribute[]{a, a, a}; //3
+                    t1 = new Tile(r,s,attributesArray1);
+                    t2 = new Tile(r,s,attributesArray2);
+                    assertEquals(true,t1.equals(t2,true,true));
+                    assertEquals(true,t2.equals(t1,true,true));
+
+                    //Tests 2-3 arguments
+                    attributesArray1 = new Tile.Attribute[]{a, a}; //2
+                    attributesArray2 = new Tile.Attribute[]{a, a, a}; //3
+                    t1 = new Tile(r,s,attributesArray1);
+                    t2 = new Tile(r,s,attributesArray2);
+                    assertEquals(true,t1.equals(t2,true,true));
+                    assertEquals(true,t2.equals(t1,true,true));
+
+                    //Tests 2-3 (mixed) arguments
+                    attributesArray1 = new Tile.Attribute[]{a, Tile.Attribute.AKADORA}; //2
+                    attributesArray2 = new Tile.Attribute[]{a, Tile.Attribute.AKADORA, a}; //3
+                    t1 = new Tile(r,s,attributesArray1);
+                    t2 = new Tile(r,s,attributesArray2);
+                    assertEquals(true,t1.equals(t2,true,true));
+                    assertEquals(true,t2.equals(t1,true,true));
                 }
             }
         }
