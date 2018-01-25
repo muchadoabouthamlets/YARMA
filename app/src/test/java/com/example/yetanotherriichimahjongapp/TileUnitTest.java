@@ -996,4 +996,136 @@ public class TileUnitTest {
             }
         }
     }
+
+
+    /**
+     * Tests the getName method
+     */
+    //Tests the no argument getName method (or getName(false))
+    //Should return the tile's name (with numerals for the tiles with numeric ranks)
+    @Test
+    public void toName_1() throws Exception {
+
+        //create all possible tiles
+
+        Tile.Rank ranks[] = new Tile.Rank[] {
+                Tile.Rank.NUM_1, Tile.Rank.NUM_2, Tile.Rank.NUM_3, Tile.Rank.NUM_4, Tile.Rank.NUM_5,
+                Tile.Rank.NUM_6, Tile.Rank.NUM_7, Tile.Rank.NUM_8, Tile.Rank.NUM_9
+        };
+        Tile manzuTiles[] = new Tile[9]; //all manzu
+        Tile manzuTilesAka[] = new Tile[9]; //all manzu(red)
+        Tile pinzuTiles[] = new Tile[9]; //all pinzu
+        Tile pinzuTilesAka[] = new Tile[9]; //all pinzu(red)
+        Tile souzuTiles[] = new Tile[9]; //all souzu
+        Tile souzuTilesAka[] = new Tile[9]; //all souzu (red)
+        Tile jihaiTiles[] = new Tile[7]; //all jihai
+
+        for (int i = 0; i < 9; i++) {
+            manzuTiles[i] = new Tile(ranks[i], Tile.Suit.MANZU);
+            manzuTilesAka[i] = new Tile(ranks[i], Tile.Suit.MANZU, Tile.Attribute.AKADORA);
+            pinzuTiles[i] = new Tile(ranks[i], Tile.Suit.PINZU);
+            pinzuTilesAka[i] = new Tile(ranks[i], Tile.Suit.PINZU, Tile.Attribute.AKADORA);
+            souzuTiles[i] = new Tile(ranks[i], Tile.Suit.SOUZU);
+            souzuTilesAka[i] = new Tile(ranks[i], Tile.Suit.SOUZU, Tile.Attribute.AKADORA);
+        }
+
+        jihaiTiles[0] = new Tile(Tile.Rank.TON);
+        jihaiTiles[1] = new Tile(Tile.Rank.NAN);
+        jihaiTiles[2] = new Tile(Tile.Rank.SHA);
+        jihaiTiles[3] = new Tile(Tile.Rank.PEI);
+        jihaiTiles[4] = new Tile(Tile.Rank.HAKU);
+        jihaiTiles[5] = new Tile(Tile.Rank.HATSU);
+        jihaiTiles[6] = new Tile(Tile.Rank.CHUN);
+
+
+        //numeric tile tests
+        String prefix[] = {"1","2","3","4","5","6","7","8","9"};
+
+        for (int i = 0; i < 9; i++) {
+            assertEquals(prefix[i] + "-wan",manzuTiles[i].getName());
+            assertEquals(prefix[i] + "-wan(Red)",manzuTilesAka[i].getName());
+            assertEquals(prefix[i] + "-pin",pinzuTiles[i].getName());
+            assertEquals(prefix[i] + "-pin(Red)",pinzuTilesAka[i].getName());
+            assertEquals(prefix[i] + "-sou",souzuTiles[i].getName());
+            assertEquals(prefix[i] + "-sou(Red)",souzuTilesAka[i].getName());
+        }
+
+        //jihai tests
+        assertEquals("Ton",jihaiTiles[0].getName());
+        assertEquals("Nan",jihaiTiles[1].getName());
+        assertEquals("Sha",jihaiTiles[2].getName());
+        assertEquals("Pei",jihaiTiles[3].getName());
+        assertEquals("Haku",jihaiTiles[4].getName());
+        assertEquals("Hatsu",jihaiTiles[5].getName());
+        assertEquals("Chun",jihaiTiles[6].getName());
+
+        //unknown tile test
+        Tile unknown = new Tile(Tile.Rank.UNKNOWN);
+        assertEquals("<??>",unknown.getName());
+    }
+
+
+    //Tests the one argument getName method when true (getName(true))
+    //Should return the tile's name
+    @Test
+    public void toName_2() throws Exception {
+
+        //create all possible tiles
+
+        Tile.Rank ranks[] = new Tile.Rank[] {
+                Tile.Rank.NUM_1, Tile.Rank.NUM_2, Tile.Rank.NUM_3, Tile.Rank.NUM_4, Tile.Rank.NUM_5,
+                Tile.Rank.NUM_6, Tile.Rank.NUM_7, Tile.Rank.NUM_8, Tile.Rank.NUM_9
+        };
+        Tile manzuTiles[] = new Tile[9]; //all manzu
+        Tile manzuTilesAka[] = new Tile[9]; //all manzu(red)
+        Tile pinzuTiles[] = new Tile[9]; //all pinzu
+        Tile pinzuTilesAka[] = new Tile[9]; //all pinzu(red)
+        Tile souzuTiles[] = new Tile[9]; //all souzu
+        Tile souzuTilesAka[] = new Tile[9]; //all souzu (red)
+        Tile jihaiTiles[] = new Tile[7]; //all jihai
+
+        for (int i = 0; i < 9; i++) {
+            manzuTiles[i] = new Tile(ranks[i], Tile.Suit.MANZU);
+            manzuTilesAka[i] = new Tile(ranks[i], Tile.Suit.MANZU, Tile.Attribute.AKADORA);
+            pinzuTiles[i] = new Tile(ranks[i], Tile.Suit.PINZU);
+            pinzuTilesAka[i] = new Tile(ranks[i], Tile.Suit.PINZU, Tile.Attribute.AKADORA);
+            souzuTiles[i] = new Tile(ranks[i], Tile.Suit.SOUZU);
+            souzuTilesAka[i] = new Tile(ranks[i], Tile.Suit.SOUZU, Tile.Attribute.AKADORA);
+        }
+
+        jihaiTiles[0] = new Tile(Tile.Rank.TON);
+        jihaiTiles[1] = new Tile(Tile.Rank.NAN);
+        jihaiTiles[2] = new Tile(Tile.Rank.SHA);
+        jihaiTiles[3] = new Tile(Tile.Rank.PEI);
+        jihaiTiles[4] = new Tile(Tile.Rank.HAKU);
+        jihaiTiles[5] = new Tile(Tile.Rank.HATSU);
+        jihaiTiles[6] = new Tile(Tile.Rank.CHUN);
+
+
+        //numeric tile tests
+        String prefix[] = {"Ii","Ryan","San","Suu","Uu","Rou","Chii","Paa","Kyuu"};
+
+        for (int i = 0; i < 9; i++) {
+            assertEquals(prefix[i] + "-wan",manzuTiles[i].getName(true));
+            assertEquals(prefix[i] + "-wan(Red)",manzuTilesAka[i].getName(true));
+            assertEquals(prefix[i] + "-pin",pinzuTiles[i].getName(true));
+            assertEquals(prefix[i] + "-pin(Red)",pinzuTilesAka[i].getName(true));
+            assertEquals(prefix[i] + "-sou",souzuTiles[i].getName(true));
+            assertEquals(prefix[i] + "-sou(Red)",souzuTilesAka[i].getName(true));
+        }
+
+        //jihai tests
+        assertEquals("Ton",jihaiTiles[0].getName(true));
+        assertEquals("Nan",jihaiTiles[1].getName(true));
+        assertEquals("Sha",jihaiTiles[2].getName(true));
+        assertEquals("Pei",jihaiTiles[3].getName(true));
+        assertEquals("Haku",jihaiTiles[4].getName(true));
+        assertEquals("Hatsu",jihaiTiles[5].getName(true));
+        assertEquals("Chun",jihaiTiles[6].getName(true));
+
+        //unknown tile test
+        Tile unknown = new Tile(Tile.Rank.UNKNOWN);
+        assertEquals("<??>",unknown.getName(true));
+    }
+
 }
