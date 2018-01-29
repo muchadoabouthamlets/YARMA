@@ -998,13 +998,14 @@ public class TileUnitTest {
     }
 
 
+
     /**
      * Tests the getName method
      */
     //Tests the no argument getName method (or getName(false))
     //Should return the tile's name (with numerals for the tiles with numeric ranks)
     @Test
-    public void toName_1() throws Exception {
+    public void getName_1() throws Exception {
 
         //create all possible tiles
 
@@ -1068,7 +1069,7 @@ public class TileUnitTest {
     //Tests the one argument getName method when true (getName(true))
     //Should return the tile's name
     @Test
-    public void toName_2() throws Exception {
+    public void getName_2() throws Exception {
 
         //create all possible tiles
 
@@ -1128,4 +1129,100 @@ public class TileUnitTest {
         assertEquals("<??>",unknown.getName(true));
     }
 
+
+
+    /**
+     * Tests the getNotation and toNotation methods
+     */
+    //Tests the no argument toNotation method
+    //Should produce a string containing the notation equivalent of the tile
+    @Test
+    public void toNotation_1() throws Exception {
+
+        //create and test non-jihai notation
+        Tile.Rank ranks[] = new Tile.Rank[]{
+                Tile.Rank.NUM_1, Tile.Rank.NUM_2, Tile.Rank.NUM_3,
+                Tile.Rank.NUM_4, Tile.Rank.NUM_5, Tile.Rank.NUM_6,
+                Tile.Rank.NUM_7, Tile.Rank.NUM_8, Tile.Rank.NUM_9
+        };
+        Tile.Suit suits[] = new Tile.Suit[]{
+            Tile.Suit.MANZU, Tile.Suit.PINZU, Tile.Suit.SOUZU
+        };
+
+        String prefix[] = {"1","2","3","4","5","6","7","8","9"};
+        String suffix[] = {"m","p","s"};
+
+        for (int i = 0; i < 9; i++) { //rank
+            for (int j = 0; j < 3; j++) { //suit
+                Tile t = new Tile(ranks[i],suits[j]);
+                String s = prefix[i] + suffix[j];
+                assertEquals(s,t.toNotation());
+            }
+        }
+
+
+        //create and test jihai notation
+        Tile jihai1 = new Tile(Tile.Rank.TON);
+        Tile jihai2 = new Tile(Tile.Rank.NAN);
+        Tile jihai3 = new Tile(Tile.Rank.SHA);
+        Tile jihai4 = new Tile(Tile.Rank.PEI);
+        Tile jihai5 = new Tile(Tile.Rank.HAKU);
+        Tile jihai6 = new Tile(Tile.Rank.HATSU);
+        Tile jihai7 = new Tile(Tile.Rank.CHUN);
+
+        assertEquals("T",jihai1.toNotation());
+        assertEquals("N",jihai2.toNotation());
+        assertEquals("S",jihai3.toNotation());
+        assertEquals("P",jihai4.toNotation());
+        assertEquals("W",jihai5.toNotation());
+        assertEquals("G",jihai6.toNotation());
+        assertEquals("R",jihai7.toNotation());
+
+    }
+
+    //Tests the one argument toNotation (single tile) static method
+    //Should produce a string containing the notation equivalent of the tile given as an argument
+    @Test
+    public void toNotation_2() throws Exception {
+
+        //create and test non-jihai notation
+        Tile.Rank ranks[] = new Tile.Rank[]{
+                Tile.Rank.NUM_1, Tile.Rank.NUM_2, Tile.Rank.NUM_3,
+                Tile.Rank.NUM_4, Tile.Rank.NUM_5, Tile.Rank.NUM_6,
+                Tile.Rank.NUM_7, Tile.Rank.NUM_8, Tile.Rank.NUM_9
+        };
+        Tile.Suit suits[] = new Tile.Suit[]{
+                Tile.Suit.MANZU, Tile.Suit.PINZU, Tile.Suit.SOUZU
+        };
+
+        String prefix[] = {"1","2","3","4","5","6","7","8","9"};
+        String suffix[] = {"m","p","s"};
+
+        for (int i = 0; i < 9; i++) { //rank
+            for (int j = 0; j < 3; j++) { //suit
+                Tile t = new Tile(ranks[i],suits[j]);
+                String s = prefix[i] + suffix[j];
+                assertEquals(s,Tile.toNotation(t));
+            }
+        }
+
+
+        //create and test jihai notation
+        Tile jihai1 = new Tile(Tile.Rank.TON);
+        Tile jihai2 = new Tile(Tile.Rank.NAN);
+        Tile jihai3 = new Tile(Tile.Rank.SHA);
+        Tile jihai4 = new Tile(Tile.Rank.PEI);
+        Tile jihai5 = new Tile(Tile.Rank.HAKU);
+        Tile jihai6 = new Tile(Tile.Rank.HATSU);
+        Tile jihai7 = new Tile(Tile.Rank.CHUN);
+
+        assertEquals("T",Tile.toNotation(jihai1));
+        assertEquals("N",Tile.toNotation(jihai2));
+        assertEquals("S",Tile.toNotation(jihai3));
+        assertEquals("P",Tile.toNotation(jihai4));
+        assertEquals("W",Tile.toNotation(jihai5));
+        assertEquals("G",Tile.toNotation(jihai6));
+        assertEquals("R",Tile.toNotation(jihai7));
+
+    }
 }

@@ -415,22 +415,22 @@ public class Tile {
         return null;
     } //end toNotation method
 
-    public String toNotation(Tile tile) {
+    public static String toNotation(Tile tile) {
         //Returns the notation of the tile in the parameter as a string
         return null;
     } //end toNotation method
 
-    public String toNotation(Tile tile[]) {
+    public static String toNotation(Tile tile[]) {
         //Returns the notation of the tiles in the parameter as a string
         return null;
     } //end toNotation method
 
-    public Tile toTile(String s) {
+    public static Tile toTile(String s) {
         //Returns a (new) single tile from the notation (as a string) in the parameter
         return null;
     } //end toTile method
 
-    public Tile[] toTileArray(String s) {
+    public static Tile[] toTileArray(String s) {
         //Returns a (new) tile array from the notation (as a string) in the parameter
         return null;
     } //end toTileArray method
