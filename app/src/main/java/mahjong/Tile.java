@@ -412,17 +412,57 @@ public class Tile {
 
     public String toNotation() {
         //Returns the notation of the current tile as a string
-        return null;
+
+        StringBuilder s = new StringBuilder();
+
+        switch (rank) {
+            case UNKNOWN: return "?";
+
+            case TON: return "T";
+            case NAN: return "N";
+            case SHA: return "S";
+            case PEI: return "P";
+            case HAKU: return "W";
+            case HATSU: return "G";
+            case CHUN: return "R";
+
+            case NUM_1: s.append("1"); break;
+            case NUM_2: s.append("2"); break;
+            case NUM_3: s.append("3"); break;
+            case NUM_4: s.append("4"); break;
+            case NUM_5: s.append("5"); break;
+            case NUM_6: s.append("6"); break;
+            case NUM_7: s.append("7"); break;
+            case NUM_8: s.append("8"); break;
+            case NUM_9: s.append("9"); break;
+        }
+
+        switch (suit) {
+            case MANZU: s.append("m"); break;
+            case PINZU: s.append("p"); break;
+            case SOUZU: s.append("s"); break;
+        }
+
+        if (this.is(Attribute.AKADORA)) s.append("r");
+
+        return s.toString();
+
     } //end toNotation method
 
     public static String toNotation(Tile tile) {
         //Returns the notation of the tile in the parameter as a string
-        return null;
+        return tile.toNotation();
     } //end toNotation method
 
     public static String toNotation(Tile tile[]) {
         //Returns the notation of the tiles in the parameter as a string
-        return null;
+        StringBuilder s = new StringBuilder();
+
+        for (Tile t : tile) {
+            s.append(t.toNotation());
+        }
+
+        return s.toString();
     } //end toNotation method
 
     public static Tile toTile(String s) {

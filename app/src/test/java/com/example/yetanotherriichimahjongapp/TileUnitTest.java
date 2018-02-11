@@ -1061,7 +1061,7 @@ public class TileUnitTest {
         assertEquals("Chun",jihaiTiles[6].getName());
 
         //unknown tile test
-        Tile unknown = new Tile(Tile.Rank.UNKNOWN);
+        Tile unknown = new Tile();
         assertEquals("<??>",unknown.getName());
     }
 
@@ -1154,8 +1154,13 @@ public class TileUnitTest {
 
         for (int i = 0; i < 9; i++) { //rank
             for (int j = 0; j < 3; j++) { //suit
-                Tile t = new Tile(ranks[i],suits[j]);
-                String s = prefix[i] + suffix[j];
+                Tile t;
+                String s;
+                t = new Tile(ranks[i],suits[j]);
+                s = prefix[i] + suffix[j];
+                assertEquals(s,t.toNotation());
+                t = new Tile(ranks[i],suits[j], Tile.Attribute.AKADORA);
+                s = prefix[i] + suffix[j] + "r";
                 assertEquals(s,t.toNotation());
             }
         }
@@ -1178,6 +1183,9 @@ public class TileUnitTest {
         assertEquals("G",jihai6.toNotation());
         assertEquals("R",jihai7.toNotation());
 
+        //unknown tile
+        Tile unknown = new Tile();
+        assertEquals("?",unknown.toNotation());
     }
 
     //Tests the one argument toNotation (single tile) static method
@@ -1200,12 +1208,16 @@ public class TileUnitTest {
 
         for (int i = 0; i < 9; i++) { //rank
             for (int j = 0; j < 3; j++) { //suit
-                Tile t = new Tile(ranks[i],suits[j]);
-                String s = prefix[i] + suffix[j];
+                Tile t;
+                String s;
+                t = new Tile(ranks[i],suits[j]);
+                s = prefix[i] + suffix[j];
+                assertEquals(s,Tile.toNotation(t));
+                t = new Tile(ranks[i],suits[j], Tile.Attribute.AKADORA);
+                s = prefix[i] + suffix[j] + "r";
                 assertEquals(s,Tile.toNotation(t));
             }
         }
-
 
         //create and test jihai notation
         Tile jihai1 = new Tile(Tile.Rank.TON);
@@ -1224,5 +1236,58 @@ public class TileUnitTest {
         assertEquals("G",Tile.toNotation(jihai6));
         assertEquals("R",Tile.toNotation(jihai7));
 
+        //unknown tile
+        Tile unknown = new Tile();
+        assertEquals("?",Tile.toNotation(unknown));
+
     }
+
+
+    //Tests the one argument toNotation (tile array) static method
+    //Should produce a string containing the notation equivalent of the tiles given as an argument
+    @Test
+    public void toNotation_3() throws Exception {
+
+        Tile.Rank ranks[] = new Tile.Rank[]{
+                Tile.Rank.NUM_1, Tile.Rank.NUM_2, Tile.Rank.NUM_3,
+                Tile.Rank.NUM_4, Tile.Rank.NUM_5, Tile.Rank.NUM_6,
+                Tile.Rank.NUM_7, Tile.Rank.NUM_8, Tile.Rank.NUM_9
+        };
+        Tile.Suit suits[] = new Tile.Suit[]{
+                Tile.Suit.MANZU, Tile.Suit.PINZU, Tile.Suit.SOUZU
+        };
+
+        Tile[] array = new Tile[54];
+        int counter = 0;
+
+        for (Tile.Suit s : suits) {
+            for (Tile.Rank r : ranks) {
+                array[counter] = new Tile(r,s);
+                counter++;
+                array[counter] = new Tile(r,s, Tile.Attribute.AKADORA);
+                counter++;
+            }
+        }
+
+        String s =
+                "1m1mr2m2mr3m3mr4m4mr5m5mr6m6mr7m7mr8m8mr9m9mr" +
+                "1p1pr2p2pr3p3pr4p4pr5p5pr6p6pr7p7pr8p8pr9p9pr" +
+                "1s1sr2s2sr3s3sr4s4sr5s5sr6s6sr7s7sr8s8sr9s9sr";
+
+        assertEquals(s,Tile.toNotation(array));
+
+        Tile jihaiArray[] = new Tile[7];
+        jihaiArray[0] = new Tile(Tile.Rank.TON);
+        jihaiArray[1] = new Tile(Tile.Rank.NAN);
+        jihaiArray[2] = new Tile(Tile.Rank.SHA);
+        jihaiArray[3] = new Tile(Tile.Rank.PEI);
+        jihaiArray[4] = new Tile(Tile.Rank.HAKU);
+        jihaiArray[5] = new Tile(Tile.Rank.HATSU);
+        jihaiArray[6] = new Tile(Tile.Rank.CHUN);
+
+        assertEquals("TNSPWGR",Tile.toNotation(jihaiArray));
+    }
+
+
+
 }
